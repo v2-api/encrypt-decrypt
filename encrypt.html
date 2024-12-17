@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="keywords" content="HTML, redirect, webhook, html maker, encrypt, decrypt, website maker, updater">
+    <meta name="description" content="Password encrypt and decrypt data!">
+    <title>Encrypt</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            margin-top: 50px;
+        }
+        input, button {
+            margin: 10px;
+            padding: 8px;
+            width: 250px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .output-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .output-container button {
+            width: 200px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Encrypt Data</h2>
+    <div id="form">
+        <input type="text" id="data" placeholder="Enter text to encrypt"><br>
+        <input type="password" id="password" placeholder="Enter password"><br>
+        <button onclick="encrypt()">Encrypt</button><br><br>
+        <div class="output-container" id="output"></div>
+    </div>
+    <a href="/decrypt">Go to Decrypt</a>
+    <a href="/">Home</a>
+
+    <script>
+        let encrypted = "";
+
+        function encrypt() {
+            try {
+                const data = document.getElementById('data').value;
+                const password = document.getElementById('password').value;
+
+                if (!data || !password) {
+                    alert("Please enter both data and a password.");
+                    return;
+                }
+
+                encrypted = CryptoJS.AES.encrypt(data, password).toString();
+                const encodedData = encodeURIComponent(encrypted);
+                const encodedPassword = encodeURIComponent(password);
+                const link = `${window.location.origin}/decrypt?d=${encodedData}&p=${encodedPassword}`;
+
+                document.getElementById("output").innerHTML = `
+                    <p><strong>Encrypted Data:</strong><br>${encrypted}</p>
+                    <button onclick="copyText('${encrypted}')">Copy Encrypted Data</button><br><br>
+                    <p><strong>Link with Parameters:</strong><br>${link}</p>
+                    <button onclick="copyText('${link}')">Copy Link</button>
+                `;
+            } catch (error) {
+                console.error("Encryption failed:", error);
+            }
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy:", err);
+            });
+        }
+    </script>
+</body>
+</html>
