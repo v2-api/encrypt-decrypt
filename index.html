@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <meta name="keywords" content="HTML, redirect, webhook, html maker, encrypt, decrypt, website maker, updater">
+        <meta name="description" content="Password encrypt and decrypt data!">
+        <title>Encrypt/decrypt</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+        <style>
+            body {
+                text-align: center;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="links">
+            <a href="/encrypt">encrypt</a><br>
+            <a href="/decrypt">decrypt</a>
+        </div>
+    </body>
+    <script>
+
+
+        function encrypt() {
+        try {
+            const encrypted = CryptoJS.AES.encrypt(document.getElementById('data').value, document.getElementById('password').value);
+            return encrypted.toString();
+        } catch (error) {
+            console.error("Encryption failed:", error);
+            return null;
+        }
+        };
+        function decrypt() {
+        try {
+            const decrypted = CryptoJS.AES.decrypt(document.getElementById('data').value, document.getElementById('password').value);
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        } catch (error) {
+            console.error("Decryption failed:", error);
+            return null;
+        }
+        }
+      </script>
+</html>
